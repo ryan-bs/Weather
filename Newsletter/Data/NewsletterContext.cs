@@ -1,5 +1,13 @@
-﻿namespace Newsletter.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using Newsletter.Models;
 
-public class NewsletterContext
+namespace Newsletter.Data;
+
+public class NewsletterContext : DbContext
 {
+    public NewsletterContext(DbContextOptions<NewsletterContext> opts) : base(opts)
+    {
+    }
+
+    public DbSet<Subscription> Subscriptions { get; set; }
 }
