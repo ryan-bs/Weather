@@ -1,8 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using Newsletter.Data;
+using Newsletter.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("NewsletterConnection");
+
+ConfigureServices.Configure(builder.Services);
 
 // Add services to the container.
 
