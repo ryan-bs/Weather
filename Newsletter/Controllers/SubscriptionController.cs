@@ -15,7 +15,11 @@ public class SubscriptionController : ControllerBase
         _subscriptionService = subscriptionService;
     }
 
-
+    /// <summary>
+    /// Realizar o registro para recebimento de atualizações: semanais, quinzenais, mensais ou semestrais
+    /// </summary>
+    /// <param name="subscriptionDto"></param>
+    /// <returns></returns>
     [HttpPost]
     public async Task<IActionResult> SubscribeAsync([FromBody] SubscriptionDTO subscriptionDto)
     {
@@ -23,6 +27,11 @@ public class SubscriptionController : ControllerBase
         return Ok("Cadastro realizado.");
     }
 
+    /// <summary>
+    /// Descadastrar-se para interromper o recebimento das notificações.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
     [HttpDelete("{id}")]
     public async Task<IActionResult> UnsubscribeAsync(Guid id)
     {
