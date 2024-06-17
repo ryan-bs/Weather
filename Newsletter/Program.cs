@@ -2,8 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using Newsletter.Data;
 using Newsletter.Service.Interfaces;
 using Newsletter.Service;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
