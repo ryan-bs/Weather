@@ -6,20 +6,21 @@ namespace Newsletter.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class NewsletterController : ControllerBase
+public class SubscriptionController : ControllerBase
 {
     private readonly ISubscriptionService _subscriptionService;
 
-    public NewsletterController(ISubscriptionService subscriptionService)
+    public SubscriptionController(ISubscriptionService subscriptionService)
     {
         _subscriptionService = subscriptionService;
     }
+
 
     [HttpPost]
     public async Task<IActionResult> SubscribeAsync([FromBody] SubscriptionDTO subscriptionDto)
     {
         await _subscriptionService.SubscribeAsync(subscriptionDto);
-        return Ok("Subscription successful");
+        return Ok("Cadastro realizado.");
     }
 
     [HttpDelete("{id}")]
@@ -30,14 +31,14 @@ public class NewsletterController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetTodosRegistros()
+    public async Task<IActionResult> GetAllSubscriptionsAsync()
     {
         var subscriptions = await _subscriptionService.GetAllSubscriptionsAsync();
         return Ok(subscriptions);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetRegistroPorId(Guid id)
+    public async Task<IActionResult> GetSubscriptionByIdAsync(Guid id)
     {
         var subscription = await _subscriptionService.GetSubscriptionByIdAsync(id);
 

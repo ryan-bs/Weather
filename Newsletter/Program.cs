@@ -1,26 +1,30 @@
 using Microsoft.EntityFrameworkCore;
 using Newsletter.Data;
-using Newsletter.DependencyInjection;
+using Newsletter.Service.Interfaces;
+using Newsletter.Service;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Configure connection string
 var connectionString = builder.Configuration.GetConnectionString("NewsletterConnection");
 
-ConfigureServices.Configure(builder.Services);
+// Register services
+builder.Services.AddTransient<ISubscriptionService, SubscriptionService>();
 
-// Add services to the container.
+// Configure DbContext
+builder.Services.AddDbContext<NewsletterContext>(opts =>
+    opts.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
-builder.Services.AddDbContext<NewsletterContext>(opts => opts.UseMySql(
-    connectionString, ServerVersion.AutoDetect(connectionString)));
-
+// Add controllers
 builder.Services.AddControllers();
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configure Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -31,6 +35,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
+// Map controller endpoints
 app.MapControllers();
 
 app.Run();
