@@ -9,10 +9,12 @@ namespace Newsletter.Service;
 public class SubscriptionService : ISubscriptionService
 {
     private readonly NewsletterContext _context;
+    private readonly IEmailService _emailService;
 
-    public SubscriptionService(NewsletterContext context)
+    public SubscriptionService(NewsletterContext context, IEmailService emailService)
     {
         _context = context;
+        _emailService = emailService;
     }
 
     public async Task SubscribeAsync(SubscriptionDTO subscriptionDto)
@@ -26,6 +28,7 @@ public class SubscriptionService : ISubscriptionService
         };
         _context.Subscriptions.Add(subscription);
         await _context.SaveChangesAsync();
+        await SendConfirmationEmail(subscription.Email);
     }
 
     public async Task UnsubscribeAsync(Guid id)
@@ -35,6 +38,7 @@ public class SubscriptionService : ISubscriptionService
         {
             _context.Subscriptions.Remove(subscription);
             await _context.SaveChangesAsync();
+            await SendUnsubscribeConfirmationEmail(subscription.Email);
         }
     }
 
@@ -46,5 +50,19 @@ public class SubscriptionService : ISubscriptionService
     public async Task<Subscription> GetSubscriptionByIdAsync(Guid id)
     {
         return await _context.Subscriptions.FindAsync(id);
+    }
+
+    private async Task SendConfirmationEmail(string email)
+    {
+        string subject = "Assinatura realizada!";
+        string body = "Obrigado por assinar nossa Newsletter.";
+        await _emailService.SendEmailAsync(email, subject, body);
+    }
+
+    private async Task SendUnsubscribeConfirmationEmail(string email)
+    {
+        string subject = "Descadastrado com sucesso";
+        string body = "Você realizou o descadastro da Newsletter com sucesso.";
+        await _emailService.SendEmailAsync(email, subject, body);
     }
 }

@@ -10,6 +10,7 @@ var connectionString = builder.Configuration.GetConnectionString("NewsletterConn
 
 // Register services
 builder.Services.AddTransient<ISubscriptionService, SubscriptionService>();
+builder.Services.AddSingleton<IEmailService, EmailService>();
 
 // Configure DbContext
 builder.Services.AddDbContext<NewsletterContext>(opts =>
