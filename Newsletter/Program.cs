@@ -22,12 +22,7 @@ builder.Services.AddControllers();
 
 // Configure Swagger for API documentation
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "FilmesAPI", Version = "v1" });
-    var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
-});
+builder.Services.AddSwaggerGen(); // TODO: Achar um jeito de documentar o swagger sem gerar warnings
 
 var app = builder.Build();
 
